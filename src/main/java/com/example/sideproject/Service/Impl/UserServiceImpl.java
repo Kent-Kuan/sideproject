@@ -21,4 +21,10 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllUser() {
         return userDao.findAllUser();
     }
+
+    @Override
+    public boolean registerUser(User user) {
+        Integer result = userDao.insertUser(user.getName(), user.getPassword());
+        return result == 1 ? true : false;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.sideproject.Dao;
 
 import com.example.sideproject.Entity.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -15,4 +16,6 @@ public interface UserDao {
     User findUserByName(@Param("name")String name);
     @Select("SELECT * FROM user")
     List<User> findAllUser();
+    @Insert("INSERT INTO user VALUES(#{name}, #{password})")
+    Integer insertUser(@Param("name")String name, @Param("password")String password);
 }

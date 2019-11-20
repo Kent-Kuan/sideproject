@@ -7,4 +7,5 @@ import java.util.List;
 public interface UserService {
     public User findUserByName(String name);
     public List<User> findAllUser();
+    public boolean registerUser(User user);
 }

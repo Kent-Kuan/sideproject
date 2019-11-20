@@ -3,10 +3,7 @@ package com.example.sideproject.Controller;
 import com.example.sideproject.Entity.User;
 import com.example.sideproject.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,7 +31,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void register() {
-        System.out.println("register");
+    public void register(@RequestBody User user) {
+        if(userService.registerUser(user))
+            System.out.println("register success...");
+        System.out.println("register fail...");
     }
 }
