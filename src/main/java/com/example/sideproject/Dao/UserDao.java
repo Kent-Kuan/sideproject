@@ -14,6 +14,8 @@ import java.util.List;
 public interface UserDao {
     @Select("SELECT * FROM user WHERE name = #{name}")
     User findUserByName(@Param("name")String name);
+    @Select("SELECT * FROM user WHERE email = #{email}")
+    User findUserByEmail(@Param("email")String email);
     @Select("SELECT * FROM user")
     List<User> findAllUser();
     @Insert("INSERT INTO user(email, password) VALUES(#{email}, #{password})")

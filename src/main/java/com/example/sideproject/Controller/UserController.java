@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -23,8 +25,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public void login() {
-        System.out.println("login");
+    public ResponseEntity<ResponseBean> login(@RequestBody User user) {
+        if(user.getEmail()==null || user.getPassword()==null) {
+            return new ResponseEntity<>(ResponseBean.error(403,"Username or password empty."),
+                    HttpStatus.FORBIDDEN);
+        }
+        if(userService.login(user)) {
+            Map<String, String> map = new HashMap<>();
+            map.put("jwt", "ThisIsFakeJWT");
+            return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
+                    HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(ResponseBean.error(403,"Username or password error."),
+                    HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping("/users")
