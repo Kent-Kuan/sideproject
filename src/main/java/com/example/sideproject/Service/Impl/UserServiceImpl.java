@@ -28,10 +28,9 @@ public class UserServiceImpl implements UserService {
         Integer result;
         try {
             result = userDao.insertUser(user.getName(), user.getPassword());
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             result = 0;
-            if(e instanceof DataIntegrityViolationException)
-                System.out.println("Email already taken ...");
+            System.out.println("Email already taken ...");
         }
         return result == 1 ? true : false;
     }

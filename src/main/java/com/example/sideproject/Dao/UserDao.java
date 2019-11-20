@@ -16,6 +16,6 @@ public interface UserDao {
     User findUserByName(@Param("name")String name);
     @Select("SELECT * FROM user")
     List<User> findAllUser();
-    @Insert("INSERT INTO user VALUES(#{name}, #{password})")
-    Integer insertUser(@Param("name")String name, @Param("password")String password);
+    @Insert("INSERT INTO user(email, password) VALUES(#{email}, #{password})")
+    Integer insertUser(@Param("email")String email, @Param("password")String password);
 }
