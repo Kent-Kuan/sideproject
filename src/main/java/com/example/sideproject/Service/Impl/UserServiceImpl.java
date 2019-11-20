@@ -4,6 +4,7 @@ import com.example.sideproject.Dao.UserDao;
 import com.example.sideproject.Entity.User;
 import com.example.sideproject.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean registerUser(User user) {
-        Integer result = userDao.insertUser(user.getName(), user.getPassword());
+        Integer result;
+        try {
+            result = userDao.insertUser(user.getName(), user.getPassword());
+        } catch (Exception e) {
+            result = 0;
+            if(e instanceof DataIntegrityViolationException)
+                System.out.println("Email already taken ...");
+        }
         return result == 1 ? true : false;
     }
 }
