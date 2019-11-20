@@ -1,9 +1,6 @@
 insert into user
-values ('test1',
+values ('test1@hngf.com',
+        'test1',
+        'male',
+        0,
         'test1');
-insert into user
-values ('test2',
-        'test2');
-insert into user
-values ('test3',
-        'test3');
