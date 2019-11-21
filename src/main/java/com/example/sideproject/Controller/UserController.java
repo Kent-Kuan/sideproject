@@ -3,6 +3,7 @@ package com.example.sideproject.Controller;
 import com.example.sideproject.Entity.ResponseBean;
 import com.example.sideproject.Entity.User;
 import com.example.sideproject.Service.UserService;
+import com.example.sideproject.Utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/test")
     public void test() {
@@ -32,7 +35,8 @@ public class UserController {
         }
         if(userService.login(user)) {
             Map<String, String> map = new HashMap<>();
-            map.put("jwt", "ThisIsFakeJWT");
+            String token = jwtTokenUtil.generateToken(user);
+            map.put("token", token);
             return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
                     HttpStatus.OK);
         } else {
@@ -41,7 +45,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users")
+    @PostMapping("/users")
     public List<User> users() {
         System.out.println(userService.findAllUser());
         return userService.findAllUser();
