@@ -27,7 +27,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);
             if(!jwtTokenUtil.isTokenExpired(token)) {
                 final String email = jwtTokenUtil.getUserMailFromToken(token);
-                System.out.println(email);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         email, null);
                 usernamePasswordAuthenticationToken

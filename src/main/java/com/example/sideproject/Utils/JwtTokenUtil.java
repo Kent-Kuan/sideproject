@@ -13,8 +13,8 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil  {
     public static final long JWT_TOKEN_VALIDITY = 1 * 60 * 60;
-//    @Value("${jwt.secret}")
-    private String secret = "4C8kum4LxyKWYLM78sKdXrzbBjDCFyfX";
+    @Value("${jwt.secret}")
+    private String secret;
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();

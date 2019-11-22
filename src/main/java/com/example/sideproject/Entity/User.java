@@ -1,13 +1,18 @@
 package com.example.sideproject.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     private String email;
     private String name;
-    private String gender;
+    private Gender gender;
+    @JsonProperty("isVIP")
     private boolean isVIP;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }

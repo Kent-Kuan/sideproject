@@ -1,8 +1,10 @@
 package com.example.sideproject.Entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseBean {
     private Integer status;
     private String message;
@@ -22,6 +24,9 @@ public class ResponseBean {
     }
     public static ResponseBean ok(String message, Object data) {
         return new ResponseBean(200, message, data);
+    }
+    public static ResponseBean ok(Object data) {
+        return new ResponseBean(200, null, data);
     }
     public static ResponseBean error(String message) {
         return new ResponseBean(200, message, null);

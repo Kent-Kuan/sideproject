@@ -9,12 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
@@ -45,6 +46,12 @@ public class UserController {
         }
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<ResponseBean> getUserInfo(Principal principal) {
+        User user = userService.findUserByEmail(principal.getName());
+        return new ResponseEntity<>(ResponseBean.ok(user), HttpStatus.OK);
+    }
+
     @PostMapping("/users")
     public List<User> users() {
         System.out.println(userService.findAllUser());
@@ -53,6 +60,9 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseBean> register(@RequestBody User user) {
+        if(user.getPassword() == null || user.getEmail() == null)
+            return new ResponseEntity<ResponseBean>(ResponseBean.error(400, "Username or password empty."),
+                    HttpStatus.BAD_REQUEST);
         if(userService.registerUser(user))
             return new ResponseEntity<ResponseBean>(ResponseBean.ok(), HttpStatus.OK);
         return new ResponseEntity<ResponseBean>(ResponseBean.error(400, "Email already taken."),
