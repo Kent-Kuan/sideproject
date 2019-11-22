@@ -1,10 +1,8 @@
 package com.example.sideproject.Dao;
 
 import com.example.sideproject.Entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +18,16 @@ public interface UserDao {
     List<User> findAllUser();
     @Insert("INSERT INTO user(email, password) VALUES(#{email}, #{password})")
     Integer insertUser(@Param("email")String email, @Param("password")String password);
+    @UpdateProvider(type = UserSqlBuilder.class, method = "buildUpdateUserInfo")
+    Integer updateUser(@Param("email") String email, @Param("name") String name);
+
+    class UserSqlBuilder {
+        public static String buildUpdateUserInfo(final String email, final String name) {
+            return new SQL(){{
+                UPDATE("user");
+                SET("name = #{name}");
+                WHERE("email = #{email}");
+            }}.toString();
+        }
+    }
 }

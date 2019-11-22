@@ -52,6 +52,18 @@ public class UserController {
         return new ResponseEntity<>(ResponseBean.ok(user), HttpStatus.OK);
     }
 
+    @PutMapping("/me")
+    public ResponseEntity<ResponseBean> updateUserInfo(Principal principal, @RequestBody User user) {
+        if(user.getName() == null)
+            return new ResponseEntity<>(ResponseBean.error(400, "User name cannot empty."),
+                    HttpStatus.BAD_REQUEST);
+        user.setEmail(principal.getName());
+        if(userService.updateUser(user))
+            return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBean.error(403, "Update user name fail."),
+                HttpStatus.FORBIDDEN);
+    }
+
     @PostMapping("/users")
     public List<User> users() {
         System.out.println(userService.findAllUser());
@@ -60,12 +72,13 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseBean> register(@RequestBody User user) {
-        if(user.getPassword() == null || user.getEmail() == null)
-            return new ResponseEntity<ResponseBean>(ResponseBean.error(400, "Username or password empty."),
+        if(user.getPassword() == null || user.getEmail() == null || user.getEmail().trim().equals(""))
+            return new ResponseEntity<>(ResponseBean.error(400, "Username or password empty."),
                     HttpStatus.BAD_REQUEST);
+        user.setEmail(user.getEmail().trim());
         if(userService.registerUser(user))
-            return new ResponseEntity<ResponseBean>(ResponseBean.ok(), HttpStatus.OK);
-        return new ResponseEntity<ResponseBean>(ResponseBean.error(400, "Email already taken."),
+            return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBean.error(400, "Email already taken."),
                 HttpStatus.BAD_REQUEST);
     }
 }

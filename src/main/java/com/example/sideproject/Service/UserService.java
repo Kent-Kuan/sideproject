@@ -9,4 +9,5 @@ public interface UserService {
     public List<User> findAllUser();
     public boolean registerUser(User user);
     public boolean login(User user);
+    public boolean updateUser(User user);
 }

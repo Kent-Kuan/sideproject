@@ -8,7 +8,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,6 +41,13 @@ public class UserServiceImpl implements UserService {
             result = 0;
             System.out.println("Email already taken ...");
         }
-        return result == 1 ? true : false;
+        return result == 1;
+    }
+
+    @Override
+    public boolean updateUser(User user) {
+        Integer result;
+        result = userDao.updateUser(user.getEmail(), user.getName());
+        return result == 1;
     }
 }
