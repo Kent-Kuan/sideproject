@@ -21,6 +21,7 @@ public interface UserDao {
     @UpdateProvider(type = UserSqlBuilder.class, method = "buildUpdateUserInfo")
     Integer updateUser(@Param("email") String email, @Param("name") String name);
 
+
     class UserSqlBuilder {
         public static String buildUpdateUserInfo(final String email, final String name) {
             return new SQL(){{

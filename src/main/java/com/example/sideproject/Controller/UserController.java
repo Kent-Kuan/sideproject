@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -76,9 +77,34 @@ public class UserController {
             return new ResponseEntity<>(ResponseBean.error(400, "Username or password empty."),
                     HttpStatus.BAD_REQUEST);
         user.setEmail(user.getEmail().trim());
-        if(userService.registerUser(user))
-            return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
+        if(userService.registerUser(user)){
+            Map<String, String> map = new HashMap<>();
+            String token = jwtTokenUtil.generateToken(user);
+            map.put("token", token);
+            return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
+                    HttpStatus.OK);
+        }
         return new ResponseEntity<>(ResponseBean.error(400, "Email already taken."),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<ResponseBean> logout(Principal principal) {
+        System.out.println(String.format("User: %s logout.", principal.getName()));
+        return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
+    }
+
+    @GetMapping("/refreshToken")
+    public ResponseEntity<ResponseBean> refreshToken(Principal principal) {
+        String userEmail = principal.getName();
+        System.out.println(String.format("User: %s refresh token.", userEmail));
+
+        User user = new User();
+        user.setEmail(userEmail);
+        Map<String, String> map = new HashMap<>();
+        String token = jwtTokenUtil.generateToken(user);
+        map.put("token", token);
+        return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
+                HttpStatus.OK);
     }
 }
