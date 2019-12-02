@@ -20,7 +20,9 @@ build:
 deploy:
   stage: deploy
   script:
-    - java -jar *.jar
+    - java -jar $(ls build/libs/*.jar)
+  dependencies:
+    - build
 # production:
 #   stage: deploy
 #   script:
