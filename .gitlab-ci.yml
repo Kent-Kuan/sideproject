@@ -15,12 +15,12 @@ build:
     - ./gradlew bootJar
   artifacts:
     paths:
-      - target/sideproject.jar
+      - build/libs/*.jar
 
 deploy:
   stage: deploy
   script:
-    - java -jar target/sideproject.jar
+    - java -jar *.jar
 # production:
 #   stage: deploy
 #   script:
