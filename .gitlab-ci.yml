@@ -10,14 +10,17 @@ before_script:
 build:
   stage: build
   tags:
-    - build
+    - backend
   script:
     - ./gradlew bootJar
-    - java -jar build/libs/$(ls *.jar)
-#  artifacts:
-#    paths:
-#      - target/demo-0.0.1-SNAPSHOT.jar
+  artifacts:
+    paths:
+      - target/sideproject.jar
 
+deploy:
+  stage: deploy
+  script:
+    - java -jar target/sideproject.jar
 # production:
 #   stage: deploy
 #   script:
