@@ -9,7 +9,8 @@ before_script:
 
 build:
   stage: build
-  tags: build
+  tags:
+    - build
   script: ./gradlew jar
   artifacts:
     paths:
