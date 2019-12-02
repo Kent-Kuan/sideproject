@@ -9,6 +9,7 @@ before_script:
 
 build:
   stage: build
+  tag: build
   script: ./gradlew jar
   artifacts:
     paths:
