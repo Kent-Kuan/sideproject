@@ -4,35 +4,29 @@ stages:
   - build
   - deploy
 
-before_script:
-  - chmod +x gradlew
-
 build:
   stage: build
   tags:
     - backend
   script:
+    - chmod +x gradlew
     - ./gradlew bootJar
   artifacts:
+    expire_in: 1 week
     paths:
       - build/libs/*.jar
 
 deploy:
+  variables:
+    TAG: $CI_COMMIT_REF_SLUG
   stage: deploy
   tags:
     - deploy220
   script:
     - cp build/libs/*.jar docker
     - cd docker
-    - docker build -t "side-project:$CI_COMMIT_REF_SLUG" .
-    - docker run -d --rm --name side-project -p 8080:8080 "side-project:$CI_COMMIT_REF_SLUG"
+    - docker stop side-project
+    - docker build -t side-project:"$TAG" .
+    - docker run -d --rm --name side-project -p 8080:8080 side-project:"$TAG"
   dependencies:
     - build
-# production:
-#   stage: deploy
-#   script:
-#   - curl --location "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar zx
-#   - ./cf login -u $CF_USERNAME -p $CF_PASSWORD -a api.run.pivotal.io
-#   - ./cf push
-#   only:
-#   - master
