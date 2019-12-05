@@ -19,8 +19,11 @@ build:
 
 deploy:
   stage: deploy
+  tags:
+    - deploy220
   script:
-    - java -jar $(ls build/libs/*.jar)
+    - pwd
+    - ls
   dependencies:
     - build
 # production:
