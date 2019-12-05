@@ -15,7 +15,7 @@ build:
     - ./gradlew bootJar
   artifacts:
     paths:
-      - build/libs/*.jar
+      - docker/*.jar
 
 deploy:
   stage: deploy
