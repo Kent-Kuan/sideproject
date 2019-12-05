@@ -25,7 +25,7 @@ deploy:
     - cp build/libs/*.jar docker
     - cd docker
     - docker build -t "side-project:$CI_COMMIT_REF_SLUG" .
-    - docker run -d --rm --name side-project -p 8080:8080 side-project:$CI_COMMIT_REF_SLUG
+    - docker run -d --rm --name side-project -p 8080:8080 "side-project:$CI_COMMIT_REF_SLUG"
   dependencies:
     - build
 # production:
