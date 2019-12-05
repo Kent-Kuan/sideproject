@@ -25,8 +25,9 @@ public class UserController {
     JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/test")
-    public void test() {
+    public String test() {
         System.out.println("Hello world");
+        return "Hello world";
     }
 
     @PostMapping("/login")
