@@ -25,6 +25,8 @@ deploy:
     - pwd
     - ls
     - cp build/libs/*.jar docker
+    - cd docker
+    - docker build -t "side-project:$CI_COMMIT_REF_SLUG" .
   dependencies:
     - build
 # production:
