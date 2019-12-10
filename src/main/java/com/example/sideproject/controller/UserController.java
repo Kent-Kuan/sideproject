@@ -89,7 +89,7 @@ public class UserController {
                 HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<ResponseBean> logout(Principal principal) {
         System.out.println(String.format("User: %s logout.", principal.getName()));
         return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
