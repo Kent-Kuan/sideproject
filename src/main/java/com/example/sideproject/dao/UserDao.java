@@ -1,6 +1,6 @@
-package com.example.sideproject.Dao;
+package com.example.sideproject.dao;
 
-import com.example.sideproject.Entity.User;
+import com.example.sideproject.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Repository;

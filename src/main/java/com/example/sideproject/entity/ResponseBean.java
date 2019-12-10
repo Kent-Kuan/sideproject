@@ -1,4 +1,4 @@
-package com.example.sideproject.Entity;
+package com.example.sideproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
