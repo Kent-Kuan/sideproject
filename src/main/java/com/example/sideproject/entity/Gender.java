@@ -1,4 +1,4 @@
-package com.example.sideproject.Entity;
+package com.example.sideproject.entity;
 
 public enum Gender {
     male,female,unknown

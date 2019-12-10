@@ -1,8 +1,8 @@
-package com.example.sideproject.Service.Impl;
+package com.example.sideproject.service.impl;
 
-import com.example.sideproject.Dao.UserDao;
-import com.example.sideproject.Entity.User;
-import com.example.sideproject.Service.UserService;
+import com.example.sideproject.dao.UserDao;
+import com.example.sideproject.entity.User;
+import com.example.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
