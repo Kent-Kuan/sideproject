@@ -1,9 +1,9 @@
-package com.example.sideproject.Controller;
+package com.example.sideproject.controller;
 
-import com.example.sideproject.Entity.ResponseBean;
-import com.example.sideproject.Entity.User;
-import com.example.sideproject.Service.UserService;
-import com.example.sideproject.Utils.JwtTokenUtil;
+import com.example.sideproject.entity.ResponseBean;
+import com.example.sideproject.entity.User;
+import com.example.sideproject.service.UserService;
+import com.example.sideproject.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

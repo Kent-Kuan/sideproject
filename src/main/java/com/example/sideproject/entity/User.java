@@ -1,6 +1,5 @@
-package com.example.sideproject.Entity;
+package com.example.sideproject.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
