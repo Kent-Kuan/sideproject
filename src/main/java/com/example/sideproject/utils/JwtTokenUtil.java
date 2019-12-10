@@ -1,6 +1,6 @@
-package com.example.sideproject.Utils;
+package com.example.sideproject.utils;
 
-import com.example.sideproject.Entity.User;
+import com.example.sideproject.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;

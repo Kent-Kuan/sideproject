@@ -1,6 +1,6 @@
-package com.example.sideproject.Service;
+package com.example.sideproject.service;
 
-import com.example.sideproject.Entity.User;
+import com.example.sideproject.entity.User;
 
 import java.util.List;
 
