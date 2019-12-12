@@ -29,6 +29,11 @@ public class JwtTokenUtil  {
         return expiration.before(new Date());
     }
 
+    public Date getTokenExpiration(String token) {
+        final Date expiration = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getExpiration();
+        return expiration;
+    }
+
     public String getUserMailFromToken(String token) {
         final String userMail = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
         return userMail;
