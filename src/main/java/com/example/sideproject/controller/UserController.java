@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 @CrossOrigin
 @RestController
@@ -37,9 +39,7 @@ public class UserController {
                     HttpStatus.FORBIDDEN);
         }
         if(userService.login(user)) {
-            Map<String, String> map = new HashMap<>();
-            String token = jwtTokenUtil.generateToken(user);
-            map.put("token", token);
+            Map<String, Object> map = genTokenAndExpiredTime(user);
             return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
                     HttpStatus.OK);
         } else {
@@ -79,9 +79,7 @@ public class UserController {
                     HttpStatus.BAD_REQUEST);
         user.setEmail(user.getEmail().trim());
         if(userService.registerUser(user)){
-            Map<String, String> map = new HashMap<>();
-            String token = jwtTokenUtil.generateToken(user);
-            map.put("token", token);
+            Map<String, Object> map = genTokenAndExpiredTime(user);
             return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
                     HttpStatus.OK);
         }
@@ -95,17 +93,25 @@ public class UserController {
         return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
     }
 
-    @GetMapping("/refreshToken")
+    @PostMapping("/refreshToken")
     public ResponseEntity<ResponseBean> refreshToken(Principal principal) {
         String userEmail = principal.getName();
         System.out.println(String.format("User: %s refresh token.", userEmail));
 
         User user = new User();
         user.setEmail(userEmail);
-        Map<String, String> map = new HashMap<>();
-        String token = jwtTokenUtil.generateToken(user);
-        map.put("token", token);
+        Map<String, Object> map = genTokenAndExpiredTime(user);
         return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
                 HttpStatus.OK);
+    }
+
+    private Map<String, Object> genTokenAndExpiredTime(User user) {
+        Map<String, Object> map = new HashMap<>();
+        String token = jwtTokenUtil.generateToken(user);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        map.put("token", token);
+        map.put("expiredAt", sdf.format(jwtTokenUtil.getTokenExpiration(token)));
+        return map;
     }
 }
