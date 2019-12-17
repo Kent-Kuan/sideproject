@@ -1,6 +1,4 @@
-insert into user
+insert into user(email, password, balance)
 values ('test1@hngf.com',
         'test1',
-        'male',
-        0,
-        'test1');
+        200);

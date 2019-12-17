@@ -14,4 +14,5 @@ public class User {
     private boolean isVIP;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    private Integer balance;
 }
