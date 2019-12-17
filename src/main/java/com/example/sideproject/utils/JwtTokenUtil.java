@@ -1,6 +1,6 @@
-package com.example.sideproject.Utils;
+package com.example.sideproject.utils;
 
-import com.example.sideproject.Entity.User;
+import com.example.sideproject.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +27,11 @@ public class JwtTokenUtil  {
     public Boolean isTokenExpired(String token) {
         final Date expiration = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getExpiration();
         return expiration.before(new Date());
+    }
+
+    public Date getTokenExpiration(String token) {
+        final Date expiration = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getExpiration();
+        return expiration;
     }
 
     public String getUserMailFromToken(String token) {

@@ -1,4 +1,4 @@
-package com.example.sideproject.Entity;
+package com.example.sideproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class ResponseBean {
     }
 
     public static ResponseBean ok() {
-        return new ResponseBean(200, null, null);
+        return new ResponseBean(200, "", null);
     }
     public static ResponseBean ok(String message) {
         return new ResponseBean(200, message, null);
@@ -26,7 +26,7 @@ public class ResponseBean {
         return new ResponseBean(200, message, data);
     }
     public static ResponseBean ok(Object data) {
-        return new ResponseBean(200, null, data);
+        return new ResponseBean(200, "", data);
     }
     public static ResponseBean error(String message) {
         return new ResponseBean(200, message, null);

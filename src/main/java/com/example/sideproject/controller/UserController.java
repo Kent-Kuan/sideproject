@@ -1,18 +1,20 @@
-package com.example.sideproject.Controller;
+package com.example.sideproject.controller;
 
-import com.example.sideproject.Entity.ResponseBean;
-import com.example.sideproject.Entity.User;
-import com.example.sideproject.Service.UserService;
-import com.example.sideproject.Utils.JwtTokenUtil;
+import com.example.sideproject.entity.ResponseBean;
+import com.example.sideproject.entity.User;
+import com.example.sideproject.service.UserService;
+import com.example.sideproject.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 @CrossOrigin
 @RestController
@@ -37,9 +39,7 @@ public class UserController {
                     HttpStatus.FORBIDDEN);
         }
         if(userService.login(user)) {
-            Map<String, String> map = new HashMap<>();
-            String token = jwtTokenUtil.generateToken(user);
-            map.put("token", token);
+            Map<String, Object> map = genTokenAndExpiredTime(user);
             return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
                     HttpStatus.OK);
         } else {
@@ -74,14 +74,13 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseBean> register(@RequestBody User user) {
-        if(user.getPassword() == null || user.getEmail() == null || user.getEmail().trim().equals(""))
+        if(user.getPassword() == null || user.getPassword().trim().equals("")
+                || user.getEmail() == null || user.getEmail().trim().equals(""))
             return new ResponseEntity<>(ResponseBean.error(400, "Username or password empty."),
                     HttpStatus.BAD_REQUEST);
         user.setEmail(user.getEmail().trim());
         if(userService.registerUser(user)){
-            Map<String, String> map = new HashMap<>();
-            String token = jwtTokenUtil.generateToken(user);
-            map.put("token", token);
+            Map<String, Object> map = genTokenAndExpiredTime(user);
             return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
                     HttpStatus.OK);
         }
@@ -89,23 +88,31 @@ public class UserController {
                 HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<ResponseBean> logout(Principal principal) {
         System.out.println(String.format("User: %s logout.", principal.getName()));
         return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
     }
 
-    @GetMapping("/refreshToken")
+    @PostMapping("/refreshToken")
     public ResponseEntity<ResponseBean> refreshToken(Principal principal) {
         String userEmail = principal.getName();
         System.out.println(String.format("User: %s refresh token.", userEmail));
 
         User user = new User();
         user.setEmail(userEmail);
-        Map<String, String> map = new HashMap<>();
-        String token = jwtTokenUtil.generateToken(user);
-        map.put("token", token);
+        Map<String, Object> map = genTokenAndExpiredTime(user);
         return new ResponseEntity<>(ResponseBean.ok("Login success.", map),
                 HttpStatus.OK);
+    }
+
+    private Map<String, Object> genTokenAndExpiredTime(User user) {
+        Map<String, Object> map = new HashMap<>();
+        String token = jwtTokenUtil.generateToken(user);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        map.put("token", token);
+        map.put("expiredAt", sdf.format(jwtTokenUtil.getTokenExpiration(token)));
+        return map;
     }
 }
