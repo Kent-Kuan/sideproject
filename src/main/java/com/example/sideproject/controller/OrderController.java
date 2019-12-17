@@ -7,6 +7,7 @@ import com.example.sideproject.exception.BaseException;
 import com.example.sideproject.exception.CustomNoSuchElementException;
 import com.example.sideproject.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,12 @@ import java.util.Set;
 public class OrderController {
     @Autowired
     OrderService orderService;
+    @Value("${lottery.max}")
+    private int NUMBER_MAX;
+    @Value("${lottery.min}")
+    private int NUMBER_MIN;
+    @Value("${lottery.place.size}")
+    private int NUMBER_SIZE;
 
     @PostMapping("/order")
     public ResponseEntity<ResponseBean> placeOrder(@RequestBody Order order, Principal principal) throws CustomNoSuchElementException {
@@ -57,9 +64,9 @@ public class OrderController {
 
     private boolean validNumbers(int[] numbers) {
         Set<Integer> duplicate = new HashSet<>();
-        if (numbers.length != 2)
+        if (numbers.length != NUMBER_SIZE)
             return true;
-        return Arrays.stream(numbers).anyMatch(num -> num < 1 || num > 39 || !duplicate.add(num));
+        return Arrays.stream(numbers).anyMatch(num -> num < NUMBER_MIN || num > NUMBER_MAX || !duplicate.add(num));
     }
 
     @ExceptionHandler(value = BaseException.class)

@@ -2,6 +2,7 @@ package com.example.sideproject.schedule;
 
 import com.example.sideproject.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +14,10 @@ import java.util.stream.IntStream;
 
 @Component
 public class WinningNumbersSchedule {
-    private final int NUMBER_MAX = 29;
-    private final int NUMBER_MIN = 1;
-    private final int NUMBER_SIZE = 5;
+    @Value("${lottery.max}")
+    private int NUMBER_MAX;
+    @Value("${lottery.winning.size}")
+    private int NUMBER_SIZE;
     @Autowired
     OrderService orderService;
 
