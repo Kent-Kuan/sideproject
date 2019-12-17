@@ -74,7 +74,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseBean> register(@RequestBody User user) {
-        if(user.getPassword() == null || user.getEmail() == null || user.getEmail().trim().equals(""))
+        if(user.getPassword() == null || user.getPassword().trim().equals("")
+                || user.getEmail() == null || user.getEmail().trim().equals(""))
             return new ResponseEntity<>(ResponseBean.error(400, "Username or password empty."),
                     HttpStatus.BAD_REQUEST);
         user.setEmail(user.getEmail().trim());
