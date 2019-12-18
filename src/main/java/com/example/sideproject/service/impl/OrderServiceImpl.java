@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
             throw new CustomNoSuchElementException(998, "Balance not enough.");
         }
         orderDao.insertOrder(email, numbers);
-        orderDao.updateBalanceWithEmail(currentBalance, email);
+        userDao.updateBalanceWithEmail(currentBalance, email);
         return false;
     }
 
