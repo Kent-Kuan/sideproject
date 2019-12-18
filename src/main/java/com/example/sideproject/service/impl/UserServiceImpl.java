@@ -2,6 +2,7 @@ package com.example.sideproject.service.impl;
 
 import com.example.sideproject.dao.UserDao;
 import com.example.sideproject.entity.User;
+import com.example.sideproject.exception.CustomNoSuchElementException;
 import com.example.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,5 +50,18 @@ public class UserServiceImpl implements UserService {
         Integer result;
         result = userDao.updateUser(user.getEmail(), user.getName());
         return result == 1;
+    }
+
+    @Override
+    public boolean updateBalance(String email, int balance) throws CustomNoSuchElementException {
+        User user = userDao.findUserByEmail(email);
+        if(user == null) {
+            throw new CustomNoSuchElementException(997, "Cannot find this user.");
+        }
+        int currentBalance = user.getBalance();
+        balance = currentBalance + balance;
+        if(userDao.updateBalanceWithEmail(balance, user.getEmail()) != 1)
+            throw new CustomNoSuchElementException(899, "Add value fail.");
+        return true;
     }
 }

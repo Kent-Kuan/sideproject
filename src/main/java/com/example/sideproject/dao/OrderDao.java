@@ -27,9 +27,6 @@ public interface OrderDao {
     @Select("SELECT id, numbers, create_time, stage, winning, user_id FROM orders WHERE stage = #{stage} AND winning = 0")
     List<Order> findNotCheckedOrdersByStage(String stage);
 
-    @Update("UPDATE user SET balance = #{balance} WHERE email = #{email}")
-    int updateBalanceWithEmail(@Param("balance")int balance, @Param("email")String  email);
-
     @Update({"<script>",
             "<foreach collection='updateBalanceByUserId' item='value' index='key'  separator=';' >",
             "UPDATE user SET balance = balance + #{value} WHERE id = #{key}",

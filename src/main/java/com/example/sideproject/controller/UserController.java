@@ -2,6 +2,7 @@ package com.example.sideproject.controller;
 
 import com.example.sideproject.entity.ResponseBean;
 import com.example.sideproject.entity.User;
+import com.example.sideproject.exception.CustomNoSuchElementException;
 import com.example.sideproject.service.UserService;
 import com.example.sideproject.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,15 @@ public class UserController {
             return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
         return new ResponseEntity<>(ResponseBean.error(403, "Update user name fail."),
                 HttpStatus.FORBIDDEN);
+    }
+
+    @PutMapping("/value/{value}")
+    public ResponseEntity<ResponseBean> addUserValue(Principal principal, @PathVariable("value") int value) throws CustomNoSuchElementException {
+        if(value <= 0)
+            return new ResponseEntity<>(ResponseBean.error(400, "User name cannot empty."),
+                    HttpStatus.BAD_REQUEST);
+        userService.updateBalance(principal.getName(), value);
+        return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
     }
 
     @PostMapping("/users")
