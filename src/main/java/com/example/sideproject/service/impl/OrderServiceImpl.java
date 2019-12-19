@@ -47,8 +47,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<WinningNumbers> enquireWinningNumbers() {
-        return orderDao.findAllWinningNumbers();
+    public List<WinningNumbers> enquireWinningNumbers(int page) {
+        return orderDao.findAllWinningNumbers(page);
     }
 
     @Override
