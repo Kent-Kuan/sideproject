@@ -4,6 +4,7 @@ import com.example.sideproject.config.NumbersTypeHandler;
 import com.example.sideproject.entity.Order;
 import com.example.sideproject.entity.WinningNumbers;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,9 +27,6 @@ public interface OrderDao {
     })
     @Select("SELECT id, numbers, create_time, stage, winning, user_id FROM orders WHERE stage = #{stage} AND winning = 0")
     List<Order> findNotCheckedOrdersByStage(String stage);
-
-    @Update("UPDATE user SET balance = #{balance} WHERE email = #{email}")
-    int updateBalanceWithEmail(@Param("balance")int balance, @Param("email")String  email);
 
     @Update({"<script>",
             "<foreach collection='updateBalanceByUserId' item='value' index='key'  separator=';' >",
@@ -53,8 +51,8 @@ public interface OrderDao {
             @Result(property = "numbers", column = "numbers", typeHandler = NumbersTypeHandler.class),
             @Result(property = "createTime", column = "create_time")
     })
-    @Select("SELECT stage, numbers, create_time FROM WINNING")
-    List<WinningNumbers> findAllWinningNumbers();
+    @SelectProvider(type = UserSqlBuilder.class, method = "selectWinningNumbers")
+    List<WinningNumbers> findAllWinningNumbers(@Param("page")int page);
 
     @Results(value = {
             @Result(property = "numbers", column = "numbers", typeHandler = NumbersTypeHandler.class),
@@ -72,4 +70,18 @@ public interface OrderDao {
             "</foreach>",
             "</script>"})
     int updateOrder(List<Order> orders);
+
+    class UserSqlBuilder {
+        public static String selectWinningNumbers(final int page) {
+            return new SQL(){{
+                SELECT("stage", "numbers", "create_time");
+                FROM("WINNING");
+                ORDER_BY("create_time DESC");
+                if(page > 0) {
+                    LIMIT(10);
+                    OFFSET((page-1)*10);
+                }
+            }}.toString();
+        }
+    }
 }

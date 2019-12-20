@@ -57,8 +57,9 @@ public class OrderController {
     }
 
     @GetMapping("/winning")
-    public ResponseEntity<ResponseBean> enquireWinningNumbers() throws CustomNoSuchElementException {
-        List<WinningNumbers> winningNumbers = orderService.enquireWinningNumbers();
+    public ResponseEntity<ResponseBean> enquireWinningNumbers(@RequestParam(value = "page", required = false) String page) throws CustomNoSuchElementException {
+        int pageNumber = page == null ? 0 : Integer.valueOf(page);
+        List<WinningNumbers> winningNumbers = orderService.enquireWinningNumbers(Integer.valueOf(pageNumber));
         return new ResponseEntity<>(ResponseBean.ok(winningNumbers), HttpStatus.OK);
     }
 

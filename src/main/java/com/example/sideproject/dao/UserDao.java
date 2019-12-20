@@ -20,6 +20,8 @@ public interface UserDao {
     Integer insertUser(@Param("email")String email, @Param("password")String password);
     @UpdateProvider(type = UserSqlBuilder.class, method = "buildUpdateUserInfo")
     Integer updateUser(@Param("email") String email, @Param("name") String name);
+    @Update("UPDATE user SET balance = #{balance} WHERE email = #{email}")
+    int updateBalanceWithEmail(@Param("balance")int balance, @Param("email")String  email);
 
 
     class UserSqlBuilder {

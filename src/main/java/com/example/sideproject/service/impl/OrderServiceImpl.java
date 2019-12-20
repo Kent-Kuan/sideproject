@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
             throw new CustomNoSuchElementException(998, "Balance not enough.");
         }
         orderDao.insertOrder(email, numbers);
-        orderDao.updateBalanceWithEmail(currentBalance, email);
+        userDao.updateBalanceWithEmail(currentBalance, email);
         return false;
     }
 
@@ -47,8 +47,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<WinningNumbers> enquireWinningNumbers() {
-        return orderDao.findAllWinningNumbers();
+    public List<WinningNumbers> enquireWinningNumbers(int page) {
+        return orderDao.findAllWinningNumbers(page);
     }
 
     @Override
