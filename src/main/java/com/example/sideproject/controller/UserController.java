@@ -104,7 +104,7 @@ public class UserController {
         return new ResponseEntity<>(ResponseBean.ok(), HttpStatus.OK);
     }
 
-    @PostMapping("/refreshToken")
+    @PostMapping("/refresh_token")
     public ResponseEntity<ResponseBean> refreshToken(Principal principal) {
         String userEmail = principal.getName();
         System.out.println(String.format("User: %s refresh token.", userEmail));
